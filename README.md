@@ -6,9 +6,13 @@ Closh is a basic shell implementation, which will execute a given execution a gi
 In addition to this, the shell can either run processes in parallel or sequentially, with an optional timeout.
 
 To build:
+
 `git clone https://github.com/qwright/closh-15.git`
 
 Build closh with:
+
 `make`
+
+and run with:
 
 `./closh`
