@@ -1,5 +1,5 @@
 // closh.c - COSC 315, Winter 2020
-// YOUR NAME HERE
+// Group 15
 
 #include <stdio.h>
 #include <unistd.h>
@@ -34,6 +34,9 @@ int main() {
     int count; // number of times to execute command
     int parallel; // whether to run in parallel or sequentially
     int timeout; // max seconds to run set of commands (parallel) or each command (sequentially)
+		
+		pid_t pid; //parent id
+		int status; //status of process
     
     while (TRUE) { // main shell input loop
         
@@ -64,7 +67,19 @@ int main() {
         // /////////////////////////////////////////////////////
         
         // just executes the given command once - REPLACE THIS CODE WITH YOUR OWN
-        execvp(cmdTokens[0], cmdTokens); // replaces the current process with the given program
+        //execvp(cmdTokens[0], cmdTokens);replaces the current process with the given program
+
+				//loop for child processes as specified by count
+				while(count > 1){
+					pid = fork();
+					if(pid==0){
+						execvp(cmdTokens[0], cmdTokens);
+					}
+					count--;
+				}
+				//parent executes here i.e. final count
+				execvp(cmdTokens[0], cmdTokens);
+
         // doesn't return unless the calling failed
         printf("Can't execute %s\n", cmdTokens[0]); // only reached if running the program failed
         exit(1);        
