@@ -79,26 +79,27 @@ int main() {
 					time(&start);//start a timer for each proccess
 					if(pid==0){
 						printf("CHILD PID: %d, Creating Process...\n", pid);
+						sleep(5);
 						execvp(cmdTokens[0], cmdTokens);//this ends the current scope
+					}else{
+						printf("Parent PID: %d, Keeping track of Child process...\n", pid); //dont execvp, as it would end program
+						if(parallel==0){
+						printf("Waiting for Child to wrap up...\n");
+						do{
+							pid = waitpid(pid, &status, WCONTINUED); //
+							time(&final);
+							final_time = final - start;
+							printf("TIME: %d\n", final_time);
+							if(timeout !=0 && final_time > timeout){
+								printf("Killing child process: %d\n", pid);
+								kill(pid, SIGKILL);
+							}
+						}while(!WIFEXITED(status));
+					count--;
 					}
 					//if process is sequential, wait for child to wrap up.
-					if(parallel==0){
-						printf("Waiting for Child to wrap up...\n");
-						pid = waitpid(pid, &status, WUNTRACED); //we use untraced as the child argument is in a different execution context	...I think ;)
-						printf("Child process ended.\n");
-					}
-					sleep(3); //for testing timeout
-					time(&final);//final timer
-					final_time = final - start;
-					printf("time: %d\n", final_time);
-
-					if(timeout !=0 && final_time > timeout){
-						printf("Killing child process\n");
-						kill(pid, SIGKILL);
-					}
 					
-					printf("Parent PID: %d, Keeping track of Child process...\n", pid); //dont execvp, as it would end program
-					count--;
+					}
 				}
 				//parent executes here i.e. final count
 				printf("Not a forked process, Creating Final Process...\n");
