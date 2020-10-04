@@ -38,9 +38,10 @@ int main() {
     int timeout; // max seconds to run set of commands (parallel) or each command (sequentially)
 		
 		pid_t pid, wait, worker; //parent id, wait pid
-		int status; //status of process
+		int status_child, status_worker; //status of process
 		time_t start, final;
 		int final_time;
+		
     
     while (TRUE) { // main shell input loop
         
@@ -88,20 +89,24 @@ int main() {
 							worker = fork(); //make a worker process to watch child
 							if(worker == 0){
 								printf("WORKER PID: %d, Watching...\n", worker);
-								wait = waitpid(pid, &status, WCONTINUED); //worker waits for executing child
+								wait = waitpid(pid, &status_worker, WUNTRACED | WCONTINUED); //worker waits for executing child
 								exit(1);
 							}
 							//parent still here
-							do{
-								time(&final);
-								final_time = final - start;
-								//printf("TIME:%d\n", final_time);
-								if(timeout != 0 && final_time > timeout){
-									printf("Killing: %d\n", pid);
-									kill(pid, SIGKILL);
-								}
-							}while(timeout !=0 && final_time <= timeout);
-					}
+							if(timeout == 0){
+								wait = waitpid(pid, &status_child, WUNTRACED | WCONTINUED); 
+							}else{
+								do{
+									time(&final);
+									final_time = final - start;
+									//printf("TIME:%d\n", final_time);
+									if(timeout != 0 && final_time >= timeout){
+										printf("Killing: %d\n", pid);
+										kill(pid, SIGKILL);
+									}
+								}while(final_time < timeout || (!WIFEXITED(status_worker) && !WIFSIGNALED(status_worker))); // wifexited: 1=TRUE 0=FALSE
+							}
+						}
 					count--;
 					}
 				}
