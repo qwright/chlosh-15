@@ -96,15 +96,17 @@ int main() {
 							if(timeout == 0){
 								wait = waitpid(pid, &status_child, WUNTRACED | WCONTINUED); 
 							}else{
+								printf("worker:%d\n", worker);
 								do{
 									time(&final);
 									final_time = final - start;
-									//printf("TIME:%d\n", final_time);
+									wait = waitpid(-1, &status_worker, WNOHANG);
+									if(wait == -1) {break;} // WNOHNG returns a value of 0 if child zombies are alive, and -1 if they died. So, break from time loop if the process has finished
 									if(timeout != 0 && final_time >= timeout){
 										printf("Killing: %d\n", pid);
 										kill(pid, SIGKILL);
 									}
-								}while(final_time < timeout || (!WIFEXITED(status_worker) && !WIFSIGNALED(status_worker))); // wifexited: 1=TRUE 0=FALSE
+								}while(final_time < timeout); 
 							}
 						}
 					count--;
