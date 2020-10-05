@@ -1,18 +1,37 @@
 # chlosh-15
 COSC 315-15 Closh Shell Project
 
-Closh is a basic shell implementation, which will execute a given execution a given number of times.
+Project Description:
 
-In addition to this, the shell can either run processes in parallel or sequentially, with an optional timeout.
+	Closh is a basic shell implementation, which will execute a given execution a given number of times.
+
+	In addition to this, the shell can either run processes in parallel or sequentially, with an optional timeout.
+
 
 To build:
 
-`git clone https://github.com/qwright/closh-15.git`
+	`git clone https://github.com/qwright/closh-15.git`
 
 Build closh with:
 
-`make`
+	`make`
 
-and run with:
+Run with:
 
-`./closh`
+	`./closh`
+
+
+Group Member Contributions:
+
+	Quinn Wright - Closh Design and Implementation
+	
+	Christian Pasteris - Debugging
+	
+	Jesse Plamondon - Documentation
+
+	Chinmay Gopal - Sample Outputs
+
+
+Design Choices:
+
+	
