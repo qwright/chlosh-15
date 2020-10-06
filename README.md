@@ -10,15 +10,15 @@ In addition to this, the shell can either run processes in parallel or sequentia
 
 To build:
 
-	`git clone https://github.com/qwright/closh-15.git`
+	git clone https://github.com/qwright/closh-15.git
 
 Build closh with:
 
-	`make`
+	make
 
 Run with:
 
-	`./closh`
+	./closh
 
 ***
 Group Member Contributions:
@@ -49,3 +49,6 @@ The child process forks from the parent and executes the program inputted by the
 
 ### Worker Process
 The worker process was initially implemented to keep track of the child process, for the parent, as it was thought that execvp() did not exit the program correctly. Thus the idea was for this process to wait on the child to end while the parent process kept a timer, waiting for the worker. This was later deemed potentially unecessary, and future work could remove this altogether. However, it does provide some robustness and modality to a larger program using this logic. 
+
+## Example
+[Sample Output](SampleOutput.pdf)
