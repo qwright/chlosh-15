@@ -34,4 +34,10 @@ Group Member Contributions:
 
 Design Choices:
 
+	The program was designed purposefully to minimize friction within child and parent processes by keeping
+
+	variables and intentionally seperate. This reduced some early friction, which had been causing issues between
+
+	the processes, inevitably leading to a smoother and more efficient experience for the user.
+
 	
